@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Dan Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #111827;
+      color: #f9fafb;
+    }
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+    }
+    h1 { font-size: 30px; }
+    .card {
+      padding: 20px;
+      margin: 18px 0;
+      border-radius: 14px;
+      background: #1f2937;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #60a5fa;
+      color: #111827;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .muted { color: #cbd5e1; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Dan Tracker</h1>
+    <p class="muted">Nancy Pelosi · Aktieovervågning</p>
+
+    <section class="card">
+      <h2>Status</h2>
+      <p id="status">Appen er oprettet. Datakilde er endnu ikke tilsluttet.</p>
+    </section>
+
+    <section class="card">
+      <h2>Aktiehandler</h2>
+      <p class="muted">
+        Her vises indberettede køb og salg, når datakilden er tilsluttet.
+        Indberetninger kan være flere uger forsinkede.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Notifikationer</h2>
+      <p class="muted">
+        Notifikationer kræver yderligere opsætning, før de kan sendes automatisk.
+      </p>
+      <button id="notify">Aktivér notifikationstilladelse</button>
+      <p id="notifyStatus" class="muted"></p>
+    </section>
+  </main>
+
+  <script>
+    const button = document.getElementById("notify");
+    const message = document.getElementById("notifyStatus");
+
+    button.addEventListener("click", async () => {
+      if (!("Notification" in window)) {
+        message.textContent =
+          "Denne browser understøtter ikke webnotifikationer.";
+        return;
+      }
+
+      try {
+        const permission = await Notification.requestPermission();
+        message.textContent =
+          permission === "granted"
+            ? "Tilladelse givet. Automatiske advarsler skal stadig sættes op."
+            : "Notifikationstilladelse blev ikke givet.";
+      } catch {
+        message.textContent =
+          "Åbn siden via en understøttet HTTPS-adresse for at fortsætte.";
+      }
+    });
+  </script>
+</body>
+</html>
