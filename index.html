@@ -112,8 +112,11 @@
 
       statusEl.textContent =
         trades.length + " indberettede handler fundet.";
-
-      for (const trade of trades.slice(0, 25)) {
+trades.sort((a, b) =>
+  (b.transactionDate || "").localeCompare(a.transactionDate || "") ||
+  (b.disclosureDate || "").localeCompare(a.disclosureDate || "")
+);
+      for (const trade of trades.slice(0, 10)) {
         const article = document.createElement("article");
         article.className = "trade";
 
